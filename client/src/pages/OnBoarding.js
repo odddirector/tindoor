@@ -1,10 +1,11 @@
 import Nav from '../components/Nav'
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 import {useCookies} from 'react-cookie'
 import {useNavigate} from 'react-router-dom'
 import axios from 'axios'
 
 const OnBoarding = () => {
+    const [user, setUser] = useState(null)
     const [cookies, setCookie, removeCookie] = useCookies(null)
     const [formData, setFormData] = useState({
         user_id: cookies.UserId,
@@ -21,6 +22,29 @@ const OnBoarding = () => {
 
     })
 
+    const userId = cookies.UserId;
+
+    const getUser = async () => {
+        
+        // don't run the function if the user is not logged in 
+        if (!userId) return;
+
+        try {
+            const response = await axios.get('http://localhost:8000/user', {
+                params: {userId}
+            })
+            setUser(response.data)
+            setFormData(response.data)
+            console.log(response.data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        getUser()
+    }, [])
+    
     let navigate = useNavigate()
 
     const handleSubmit = async (e) => {
@@ -201,6 +225,7 @@ const OnBoarding = () => {
                             type="url"
                             name="url"
                             id="url"
+                            value={formData.url}
                             onChange={handleChange}
                             required={true}
                         />
