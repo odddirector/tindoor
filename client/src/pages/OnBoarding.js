@@ -72,6 +72,14 @@ const OnBoarding = () => {
         }))
     }
 
+    const displayHeader = (e) => {
+        if (user) {
+            return "Your Profile"
+        } else {
+            return "Create Account"
+        }
+    }
+
     return (
         <>
             <Nav
@@ -82,7 +90,7 @@ const OnBoarding = () => {
             />
 
             <div className="onboarding">
-                <h2>CREATE ACCOUNT</h2>
+                <h2>{displayHeader()}</h2>
 
                 <form onSubmit={handleSubmit}>
                     <section>
