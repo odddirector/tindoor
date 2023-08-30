@@ -18,7 +18,8 @@ const OnBoarding = () => {
         gender_interest: "woman",
         url: "",
         about: "",
-        matches: []
+        matches: [],
+        qualities: ""
 
     })
 
@@ -72,6 +73,39 @@ const OnBoarding = () => {
         }))
     }
 
+    const qualityChange = (e) => {
+
+        let checkedQualities = formData.qualities ? formData.qualities : "";
+        let clickedQuality = e.target.value + " ";
+
+        if (e.target.checked) {
+            checkedQualities += clickedQuality;
+            console.log("checked");
+        } else {
+            if(checkedQualities.search(clickedQuality) != -1) {
+                checkedQualities = checkedQualities.replace(clickedQuality, "");
+            }
+            console.log("not checked");
+        }
+
+        console.log(checkedQualities);
+
+        setFormData((prevState) => ({
+            ...prevState,
+            qualities: checkedQualities
+        }))
+    }
+
+    const isQualityChecked = (quality) => {
+        if (!formData.qualities) return false; 
+
+        if(formData.qualities.search(quality) != -1) {
+            return "checked"
+        } else {
+            return false
+        }
+    }
+
     const displayHeader = (e) => {
         if (user) {
             return "Your Profile"
@@ -79,6 +113,101 @@ const OnBoarding = () => {
             return "Create Account"
         }
     }
+
+    const displayQualities = (e) => {
+        const qualities = [
+            "greedy",
+            "envious",
+            "arrogant",
+            "selfish",
+            "cruel",
+            "dishonest",
+            "hypocritical",
+            "lazy",
+            "intolerant",
+            "ignorant",
+            "rude",
+            "inflexible",
+            "vindictive",
+            "jealous",
+            "spiteful",
+            "stubborn",
+            "apathetic",
+            "conniving",
+            "deceitful",
+            "manipulative",
+            "narcissistic",
+            "obsessive",
+            "paranoid",
+            "pessimistic",
+            "vengeful",
+            "aggressive",
+            "callous",
+            "defensive",
+            "evasive",
+            "fanatical",
+            "insensitive",
+            "egotistical",
+            "uncaring",
+            "untrustworthy",
+            "bitter",
+            "furtive",
+            "hateful",
+            "haughty",
+            "indifferent",
+            "irresponsible",
+            "judgmental",
+            "macho",
+            "materialistic",
+            "narrow-minded",
+            "obnoxious",
+            "overcritical",
+            "petty",
+            "resentful",
+            "sarcastic",
+            "scheming",
+            "superficial",
+            "unappreciative",
+            "uncooperative",
+            "unreliable",
+            "vulgar",
+            "whiny",
+            "xenophobic",
+            "yappy",
+            "zealous",
+            "devious",
+            "fickle",
+            "gloomy",
+            "insincere",
+            "moody",
+            "needy",
+            "quarrelsome",
+            "shifty",
+            "timid",
+            "volatile",
+        ];
+
+        let qualityOptions = []; 
+
+        qualities.forEach((quality, index) => {
+            qualityOptions.push(
+                <span key={index}>
+                    <input 
+                        type='checkbox' 
+                        name="qualities"
+                        value={quality}
+                        id={quality}
+                        onChange={qualityChange}
+                        checked={isQualityChecked(quality)}
+                    />
+                    <label htmlFor={quality}>{quality}</label>
+                </span>
+            );
+        });
+
+        return qualityOptions;
+    }
+    
 
     return (
         <>
@@ -212,8 +341,17 @@ const OnBoarding = () => {
 
                         </div>
 
+                         
+
                         <label htmlFor="about">About me</label>
-                        <input
+
+                        <div className="multiple-checkboxes">
+                            
+                                {displayQualities()}
+                         
+                        </div>   
+
+                        {/* <input
                             id="about"
                             type="text"
                             name="about"
@@ -221,7 +359,8 @@ const OnBoarding = () => {
                             placeholder="I like long walks..."
                             value={formData.about}
                             onChange={handleChange}
-                        />
+                        /> */}
+                         
 
                         <input type="submit"/>
                     </section>

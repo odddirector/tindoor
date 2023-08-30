@@ -171,11 +171,13 @@ nav .logo-container .logo {
     margin: 0;
 }
 
-.onboarding form .multiple-input-container input {
+.onboarding form .multiple-input-container input,
+.onboarding form .multiple-checkboxes input {
     margin-right: 10px;
 }
 
-.onboarding form .multiple-input-container label {
+.onboarding form .multiple-input-container label,
+.onboarding form .multiple-checkboxes label {
     padding: 10px;
     border: solid 2px rgb(144, 144, 144);
     border-radius: 10px;
@@ -183,7 +185,21 @@ nav .logo-container .logo {
     margin-right: 10px;
 }
 
+.onboarding form .multiple-checkboxes {
+    max-width: 800px;
+}
+
+.onboarding form .multiple-checkboxes label {
+    display: inline-block;
+    margin-bottom: 0;
+}
+
+
 .onboarding form input[type=radio] {
+    display: none;
+}
+
+.onboarding form input[type=checkbox] {
     display: none;
 }
 
@@ -192,6 +208,10 @@ nav .logo-container .logo {
 }
 
 .onboarding form input[type=radio]:checked + label {
+    border: solid 2px rgb(221, 39, 22);
+}
+
+.onboarding form input[type=checkbox]:checked + label {
     border: solid 2px rgb(221, 39, 22);
 }
 
