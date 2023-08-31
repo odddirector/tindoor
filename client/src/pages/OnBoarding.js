@@ -3,6 +3,9 @@ import {useEffect, useState} from 'react'
 import {useCookies} from 'react-cookie'
 import {useNavigate} from 'react-router-dom'
 import axios from 'axios'
+import * as faceapi from 'face-api.js';
+
+
 
 const OnBoarding = () => {
     const [user, setUser] = useState(null)
@@ -218,6 +221,64 @@ const OnBoarding = () => {
 
         return qualityOptions;
     }
+
+    const getFaceDetectorOptions = (e) => {
+        const SSD_MOBILENETV1 = 'ssd_mobilenetv1'
+        const TINY_FACE_DETECTOR = 'tiny_face_detector'
+        // ssd_mobilenetv1 options
+        let minConfidence = 0.5
+        // tiny_face_detector options
+        let inputSize = 512
+        let scoreThreshold = 0.5
+        let selectedFaceDetector = SSD_MOBILENETV1
+        return selectedFaceDetector === SSD_MOBILENETV1
+            ? new faceapi.SsdMobilenetv1Options({ minConfidence })
+            : new faceapi.TinyFaceDetectorOptions({ inputSize, scoreThreshold })
+    }
+
+    function getCurrentFaceDetectionNet() {
+        return faceapi.nets.ssdMobilenetv1
+    }
+    
+    function isFaceDetectionModelLoaded() {
+        return !!getCurrentFaceDetectionNet().params
+    }
+
+    const onPlay = async (e) => {
+        const videoEl = document.querySelector('#inputVideo')
+        const options = getFaceDetectorOptions()
+        const result = await faceapi.detectSingleFace(videoEl, options).withFaceExpressions()
+        
+        let isUgly = "";
+
+        if(result.expressions.angry > 0.8) {
+            isUgly = "You're UGLY!";
+        } else {
+            isUgly = "You're not ugly enough";
+        }
+
+        document.querySelector("#testExpressionResult").innerHTML = isUgly;
+
+        if(videoEl.paused || videoEl.ended || !isFaceDetectionModelLoaded())
+            return setTimeout(() => onPlay())
+
+        setTimeout(() => onPlay())
+    }
+
+
+    const launchCameraEmotionDetection = async (e) => {
+
+        const MODEL_URL = '/models'
+
+        await faceapi.loadFaceExpressionModel(MODEL_URL);
+        await faceapi.loadSsdMobilenetv1Model(MODEL_URL);
+
+        // try to access users webcam and stream the images
+        // to the video element
+        const stream = await navigator.mediaDevices.getUserMedia({ video: {} })
+        const videoEl = document.querySelector('#inputVideo')
+        videoEl.srcObject = stream;
+    }
     
 
     return (
@@ -389,7 +450,21 @@ const OnBoarding = () => {
                         />
                         <div className="photo-container">
                             {formData.url && <img src={formData.url} alt="profile pic preview"/>}
-                        </div>
+                        </div>  
+
+                        <span onClick={launchCameraEmotionDetection}>Ugly selfie</span>
+                        <br/>
+                        <div id="testExpressionResult"></div>
+                        
+
+    
+
+                        <video onLoadedMetadata={onPlay} id="inputVideo" autoPlay muted playsInline></video>
+                        <canvas id="overlay" />
+
+                        {/* <button id="screenshotButton" onClick="takeScreenshot()">capture</button> */}
+                        <canvas id="screencapture"></canvas>
+                        <img src="" id="imageToSave" alt=""/>
 
 
                     </section>

@@ -227,6 +227,18 @@ nav .logo-container .logo {
     width: 100%
 }
 
+#screencapture {
+    width: 500px; 
+    height: 500px; 
+    border: 1px solid cyan;
+}
+
+#imageToSave {
+    width: 349px; 
+    height: 255px; 
+    border: 1px solid red;
+}
+
 /*-------- Dashboard  --------*/
 .dashboard {
     display: flex;
