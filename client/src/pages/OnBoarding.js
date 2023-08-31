@@ -251,8 +251,8 @@ const OnBoarding = () => {
         
         let isUgly = "";
 
-        if(result.expressions.angry > 0.8) {
-            isUgly = "You're UGLY!";
+        if(typeof result !== 'undefined' && result.expressions.angry > 0.8) {
+            isUgly = "God you're UGLY!";
         } else {
             isUgly = "You're not ugly enough";
         }
@@ -278,6 +278,18 @@ const OnBoarding = () => {
         const stream = await navigator.mediaDevices.getUserMedia({ video: {} })
         const videoEl = document.querySelector('#inputVideo')
         videoEl.srcObject = stream;
+    }
+
+
+    const takeSelfie = (e) => {
+      const imageToSave = document.querySelector('#imageToSave');
+      const canvas = document.querySelector('#screencapture');
+      // draw image
+      let video = document.querySelector('#inputVideo');
+      canvas.getContext('2d').drawImage(video, 0, 0, 300, 150);
+      //create a dataUrl
+      let dataUrl = canvas.toDataURL('image/png');
+      imageToSave.src = dataUrl;
     }
     
 
@@ -462,7 +474,8 @@ const OnBoarding = () => {
                         <video onLoadedMetadata={onPlay} id="inputVideo" autoPlay muted playsInline></video>
                         <canvas id="overlay" />
 
-                        {/* <button id="screenshotButton" onClick="takeScreenshot()">capture</button> */}
+                        <div id="selfieButton" onClick={takeSelfie}>Snap!</div>
+
                         <canvas id="screencapture"></canvas>
                         <img src="" id="imageToSave" alt=""/>
 
