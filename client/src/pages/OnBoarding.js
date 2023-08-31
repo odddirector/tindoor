@@ -35,7 +35,18 @@ const OnBoarding = () => {
                 params: {userId}
             })
             setUser(response.data)
-            setFormData(response.data)
+            setFormData((prevState) => ({
+                ...prevState,
+                first_name: response.data.first_name,
+                dob_day: response.data.dob_day,
+                dob_month: response.data.dob_month,
+                dob_year: response.data.dob_year,
+                show_gender: response.data.show_gender,
+                gender_identity: response.data.gender_identity,
+                gender_interest: response.data.gender_interest,
+                url: response.data.url,
+                qualities: response.data.qualities
+            }))
             console.log(response.data)
         } catch (error) {
             console.log(error)
