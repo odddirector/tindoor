@@ -1,3 +1,5 @@
 server/.env
+client/.env
+client/src/config/keys.js
 server/node_modules
 client/node_modules

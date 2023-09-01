@@ -4,8 +4,10 @@ import {useCookies} from 'react-cookie'
 import {useNavigate} from 'react-router-dom'
 import axios from 'axios'
 import * as faceapi from 'face-api.js';
-
-
+import { storage } from "../config/firebase"
+import { auth } from "../config/firebase"
+import { ref, uploadBytesResumable, uploadString, getDownloadURL, deleteObject } from "firebase/storage";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 
 const OnBoarding = () => {
     const [user, setUser] = useState(null)
@@ -25,6 +27,7 @@ const OnBoarding = () => {
         qualities: ""
 
     })
+    const [selfieDataUrl, setSelfieDataUrl] = useState(null)
 
     const userId = cookies.UserId;
 
@@ -51,6 +54,40 @@ const OnBoarding = () => {
                 qualities: response.data.qualities
             }))
             console.log(response.data)
+
+            // a horrible hack to be able to create security auth rules in the firebase 
+            // signing in users to the firebase on the background 
+            createUserWithEmailAndPassword(auth, response.data.email, response.data.hashed_password)
+            .then((userCredential) => {
+                // Signed in 
+                const user = userCredential.user;
+                console.log("firebase user created");
+                // ...
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.log(error.message);
+
+                if(error.message.search("email-already-in-use") != -1) {
+                    console.log("email already in use");
+
+                    signInWithEmailAndPassword(auth, response.data.email, response.data.hashed_password)
+                    .then((userCredential) => {
+                        // Signed in 
+                        const user = userCredential.user;
+                        console.log("firebase user signed in");
+                        // ...
+                    })
+                    .catch((error) => {
+                        const errorCode = error.code;
+                        const errorMessage = error.message;
+                        console.log(error);
+                    });
+
+                }
+            });
+
         } catch (error) {
             console.log(error)
         }
@@ -69,7 +106,13 @@ const OnBoarding = () => {
             const response = await axios.put('http://localhost:8000/user', {formData})
             console.log(response)
             const success = response.status === 200
-            if (success) navigate('/dashboard')
+
+            // this causes a face-api error 
+            // if (success) navigate('/dashboard')
+
+            //a hack to prevent the face-api error 
+            if (success) window.location.href = "../dashboard"
+
         } catch (err) {
             console.log(err)
         }
@@ -288,8 +331,31 @@ const OnBoarding = () => {
       let video = document.querySelector('#inputVideo');
       canvas.getContext('2d').drawImage(video, 0, 0, 300, 150);
       //create a dataUrl
-      let dataUrl = canvas.toDataURL('image/png');
+      let dataUrl = canvas.toDataURL('image/jpg');
       imageToSave.src = dataUrl;
+      setSelfieDataUrl(dataUrl);
+    }
+
+
+    const uploadSelfie = async (e) => {
+
+        if (!selfieDataUrl) return;
+
+        const storageRef = ref(storage, `avatars/${cookies.UserId}.jpg`);
+
+        uploadString(storageRef, selfieDataUrl, 'data_url').then((snapshot) => {
+            console.log('Uploaded a data_url string!');
+            getDownloadURL(snapshot.ref).then(async (fileUrl) => {
+
+                console.log("sucess!");
+                console.log(fileUrl);
+
+                setFormData((prevState) => ({
+                    ...prevState,
+                    url: fileUrl
+                }))
+            });
+        });
     }
     
 
@@ -475,6 +541,8 @@ const OnBoarding = () => {
                         <canvas id="overlay" />
 
                         <div id="selfieButton" onClick={takeSelfie}>Snap!</div>
+
+                        <div id="uploadSelfie" onClick={uploadSelfie}>Upload selfie!</div>
 
                         <canvas id="screencapture"></canvas>
                         <img src="" id="imageToSave" alt=""/>
