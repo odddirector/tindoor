@@ -228,12 +228,28 @@ nav .logo-container .logo {
     width: 10%;
 }
 
+.onboarding form input[type=radio] + label,
+.onboarding form input[type=checkbox] + label {
+    transition: all 0.3s;
+}
+
+.onboarding form input[type=radio]:hover + label,
+.onboarding form input[type=checkbox]:hover + label {
+    border: solid 2px #FD4B68;
+    color: #FD4B68;
+    cursor: pointer;
+}
+
 .onboarding form input[type=radio]:checked + label {
-    border: solid 2px rgb(221, 39, 22);
+    border: solid 2px #FD4B68;
+    background-color: #FD4B68;
+    color: white;
 }
 
 .onboarding form input[type=checkbox]:checked + label {
-    border: solid 2px rgb(221, 39, 22);
+    border: solid 2px #FD4B68;
+    background-color: #FD4B68;
+    color: white;
 }
 
 
