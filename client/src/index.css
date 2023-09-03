@@ -12,6 +12,7 @@ h2 {
 
 * {
     font-family: 'Readex Pro', sans-serif;
+    box-sizing: border-box;
 }
 
 .primary-title {
@@ -144,7 +145,8 @@ nav .logo-container .logo {
     display: flex;
     flex-direction: column;
     padding: 20px;
-    width: 35%;
+    width: 100%;
+    max-width: 700px;
     text-align: start;
 }
 
@@ -185,6 +187,10 @@ nav .logo-container .logo {
     margin-right: 10px;
 }
 
+.onboarding form .multiple-input-container.dateOfBirth input {
+    width: 100px;
+}
+
 .onboarding form .multiple-checkboxes {
     max-width: 800px;
 }
@@ -203,6 +209,21 @@ nav .logo-container .logo {
     display: none;
 }
 
+.onboarding form input[type=checkbox].showGender {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 20px 0;
+    margin-right: 10px;
+}
+.onboarding form input[type=checkbox].showGender:checked + label {
+    border: none;
+    vertical-align: middle;
+}
+
+.onboarding form label.showGenderContainer {
+    display: inline-block;
+}
+
 .onboarding form input[type=number] {
     width: 10%;
 }
@@ -215,28 +236,190 @@ nav .logo-container .logo {
     border: solid 2px rgb(221, 39, 22);
 }
 
+
+
+
+.onboarding form input[type=submit] {
+    cursor: pointer;
+    transition: all 0.3s;
+    background-color: white;
+    color: #FD4B68;
+    border: 2px solid #FD4B68;
+    margin-top: 40px;
+}
+
 .onboarding form input[type=submit]:hover {
-    background-color: rgb(235, 235, 235);
+    background-color: #FD4B68;
+    color: white;
 }
 
 .onboarding form input[type=submit]:active {
     background-color: rgb(226, 115, 115);
 }
 
+
+.onboarding form .profilePhotoPreview{
+    width: 100%;
+    padding-bottom: 150%;
+    background-repeat: no-repeat;
+    background-size: 208% 100%;
+    background-position: center;
+    border-radius: 10px;
+    margin: 0 auto;
+}
+
 .onboarding form .photo-container img {
     width: 100%
 }
+
+.onboarding form .ctaButton {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: rgb(249, 249, 249);
+    border: solid 2px rgb(200, 200, 200);
+    margin-top: 20px;
+    text-align: center;
+    font-weight: normal;
+    color: rgb(57, 57, 57);
+    cursor: pointer;
+    transition: all 0.5s;
+}
+
+.onboarding form .videoContainer {
+    position: relative;
+}
+
+.onboarding form .selfieResultOverlay.inactive {
+    display: none;
+}
+
+.onboarding form .selfieResultOverlay.active {
+    display: block;
+}
+
+.onboarding form .selfieResultOverlay {
+    position: absolute;
+    background-color: white;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+
+.onboarding form .videoContainer .ctaButton {
+    width: 30%;
+    margin-left: 20px;
+}
+
+.onboarding form .ctaButton:hover {
+    background-color: #FD4B68;
+    border-color: #FD4B68;
+    color: white;
+}
+
+#testExpressionResult {
+    width: 100%;
+    text-align: center;
+    font-size: 20px;
+    font-style: italic;
+    margin-bottom: 10px;
+    transition: all 0.3s;
+}
+
+#testExpressionResult.visible {
+    display: block;
+}
+
+#testExpressionResult.hidden {
+    display: none;
+}
+
+#testExpressionResult.notUgly {
+    color: #FD4B68;
+}
+
+#testExpressionResult.ugly {
+    color: rgb(15, 231, 120);
+}
+
+#testExpressionResult.animated {
+    transform: rotate(-13deg) scale(1.3);
+}
+
+
+#selfieButton {
+    width: 70px;
+    height: 70px;
+    border-radius: 100%;
+    background-color: rgb(198, 198, 198);
+    outline: 2px solid white;
+    outline-offset: -6px;
+    margin: 10px auto;
+    margin-top: 25px;
+    cursor: pointer;
+    transition: all 0.5s;
+}
+
+#selfieButton.visible {
+    display: block;
+}
+
+#selfieButton.hidden {
+    display: none;
+}
+
+#selfieButton.inactive:hover {
+    background-color: rgb(225, 225, 225);
+}
+
+#selfieButton.active:hover {
+    background-color: rgb(15, 231, 120);
+}
+
+#selfieButton:active {
+    transition: all 0s;
+    background-color: #FD4B68;
+}
+
+#inputVideo {
+    border: 1px solid grey;
+    width: 100%;
+}
+
+#inputVideo.hidden {
+    display: none;
+}
+
+#inputVideo.visible {
+    display: block;
+}
+
 
 #screencapture {
     width: 500px; 
     height: 500px; 
     border: 1px solid cyan;
+    display: none;
+}
+
+.onboarding h3 {
+    font-weight: normal;
+    margin-bottom: 0;
+    font-size: 16px;
+    text-align: center;
 }
 
 #imageToSave {
-    width: 349px; 
-    height: 255px; 
-    border: 1px solid red;
+    position: absolute;
+    width: 45%;
+    padding-bottom: 72%;
+    right: 12px;
+    top: 12px;
+    border-radius: 10px;
+    background-size: 208% 100%;
+    background-position: center;
+    border: 2px solid #FD4B68;
 }
 
 /*-------- Dashboard  --------*/

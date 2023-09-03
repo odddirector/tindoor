@@ -28,6 +28,13 @@ const OnBoarding = () => {
 
     })
     const [selfieDataUrl, setSelfieDataUrl] = useState(null)
+    const [isUgly, setIsUgly] = useState(false)
+    const [uglyText, setUglyText] = useState("")
+    const [animateNotUgly, setAnimateNotUgly] = useState("")
+    const [isSelfieTaken, setIsSelfieTaken] = useState(false)
+    const [isSavingSelfie, setIsSavingSelfie] = useState(false)
+    const [isTakingSelfie, setIsTakingSelfie] = useState(false)
+    const [isWebcamVidHidden, setIsWebcamVidHidden] = useState(true)
 
     const userId = cookies.UserId;
 
@@ -96,12 +103,21 @@ const OnBoarding = () => {
     useEffect(() => {
         getUser()
     }, [])
+
+
+    useEffect(() => {
+        if(isSavingSelfie) {
+            handleSubmit();
+        }
+    }, [formData])
     
+
     let navigate = useNavigate()
 
     const handleSubmit = async (e) => {
         console.log('submitted')
-        e.preventDefault()
+        if (e) e.preventDefault()
+
         try {
             const response = await axios.put('http://localhost:8000/user', {formData})
             console.log(response)
@@ -110,8 +126,18 @@ const OnBoarding = () => {
             // this causes a face-api error 
             // if (success) navigate('/dashboard')
 
-            //a hack to prevent the face-api error 
-            if (success) window.location.href = "../dashboard"
+            
+            if (success) {
+                
+                console.log("database updated sucessfully");
+
+                if(!isSavingSelfie) { 
+                    //a hack to prevent the face-api error 
+                    window.location.href = "../dashboard"
+                } else {
+                    setIsSavingSelfie(false); 
+                }
+            }
 
         } catch (err) {
             console.log(err)
@@ -291,16 +317,21 @@ const OnBoarding = () => {
         const videoEl = document.querySelector('#inputVideo')
         const options = getFaceDetectorOptions()
         const result = await faceapi.detectSingleFace(videoEl, options).withFaceExpressions()
-        
-        let isUgly = "";
 
-        if(typeof result !== 'undefined' && result.expressions.angry > 0.8) {
-            isUgly = "God you're UGLY!";
+        if(typeof result !== 'undefined' && 
+        (result.expressions.angry > 0.8 ||
+        result.expressions.disgusted > 0.8 ||
+        result.expressions.fearful > 0.8 ||
+        result.expressions.surprised > 0.8
+        )) {
+            setUglyText("God you're UGLY!");
+            setIsUgly(true);
         } else {
-            isUgly = "You're not ugly enough";
+            setUglyText("Not ugly enough, try harder!");
+            setIsUgly(false);
         }
 
-        document.querySelector("#testExpressionResult").innerHTML = isUgly;
+        // document.querySelector("#testExpressionResult").innerHTML = isUglyText;
 
         if(videoEl.paused || videoEl.ended || !isFaceDetectionModelLoaded())
             return setTimeout(() => onPlay())
@@ -310,6 +341,8 @@ const OnBoarding = () => {
 
 
     const launchCameraEmotionDetection = async (e) => {
+
+        setIsWebcamVidHidden(false);
 
         const MODEL_URL = '/models'
 
@@ -321,19 +354,30 @@ const OnBoarding = () => {
         const stream = await navigator.mediaDevices.getUserMedia({ video: {} })
         const videoEl = document.querySelector('#inputVideo')
         videoEl.srcObject = stream;
+
+        setIsTakingSelfie(true);
     }
 
 
     const takeSelfie = (e) => {
-      const imageToSave = document.querySelector('#imageToSave');
-      const canvas = document.querySelector('#screencapture');
-      // draw image
-      let video = document.querySelector('#inputVideo');
-      canvas.getContext('2d').drawImage(video, 0, 0, 300, 150);
-      //create a dataUrl
-      let dataUrl = canvas.toDataURL('image/jpg');
-      imageToSave.src = dataUrl;
-      setSelfieDataUrl(dataUrl);
+      if(isUgly) {
+        const imageToSave = document.querySelector('#imageToSave');
+        const canvas = document.querySelector('#screencapture');
+        // draw image
+        let video = document.querySelector('#inputVideo');
+        canvas.getContext('2d').drawImage(video, 0, 0, 300, 150);
+        //create a dataUrl
+        let dataUrl = canvas.toDataURL('image/jpg');
+        //imageToSave.src = dataUrl;
+        setSelfieDataUrl(dataUrl);
+        setIsSelfieTaken(true);
+        setIsTakingSelfie(false);
+      } else {
+        setAnimateNotUgly("animated");
+        setTimeout(() => {
+            setAnimateNotUgly("");
+        }, 300);
+      }
     }
 
 
@@ -350,12 +394,20 @@ const OnBoarding = () => {
                 console.log("sucess!");
                 console.log(fileUrl);
 
+                setIsSavingSelfie(true);
+
+                setIsSelfieTaken(false);
+
                 setFormData((prevState) => ({
                     ...prevState,
                     url: fileUrl
                 }))
             });
         });
+    }
+
+    const discardSelfie = (e) => {
+        setIsSelfieTaken(false);
     }
     
 
@@ -373,6 +425,69 @@ const OnBoarding = () => {
 
                 <form onSubmit={handleSubmit}>
                     <section>
+
+                        <label htmlFor="url">Profile Photo</label>
+                        {/* <input
+                            type="url"
+                            name="url"
+                            id="url"
+                            value={formData.url}
+                            onChange={handleChange}
+                            required={true}
+                        /> */}
+                        <div className="photo-container">
+                            {formData.url && <div className='profilePhotoPreview' style={{backgroundImage: `url(${formData.url})`}}></div>}
+                        </div>  
+
+                        <span onClick={launchCameraEmotionDetection} className='ctaButton'>
+                            Reveal yourself!
+                        </span>
+                        <br/>
+
+            
+                        
+
+    
+                        <div className='videoContainer'>
+                            
+                            <video onLoadedMetadata={onPlay} id="inputVideo" 
+                                autoPlay 
+                                muted 
+                                playsInline
+                                className={isWebcamVidHidden ? "hidden" : "visible"}
+                            ></video>
+                            
+                            <div className={'selfieResultOverlay ' + (isSelfieTaken ? "active" : "inactive")}>
+                                
+                                {/* <img src={selfieDataUrl} id="imageToSave" alt=""/> */}
+                                <div id='imageToSave' style={{backgroundImage: `url(${selfieDataUrl})`}}></div>
+
+                                <div id="uploadSelfie" onClick={uploadSelfie} className='ctaButton'>save</div>
+                                <div id="" onClick={discardSelfie} className='ctaButton'>discard</div>
+                            </div>
+
+                        </div>
+
+
+                        <br/><br/>
+
+
+
+                        <div id="selfieButton" onClick={takeSelfie} 
+                        className={
+                            (isUgly ? "active" : "inactive") + 
+                            (isTakingSelfie ? " visible" : " hidden")}></div>
+
+                        <div id="testExpressionResult" 
+                            className={
+                                (isUgly ? "ugly" : "notUgly " + animateNotUgly) + 
+                                (isTakingSelfie ? " visible" : " hidden")}>
+
+                                {uglyText}
+                        </div>
+                        
+                        <canvas id="screencapture"></canvas>
+                        
                         <label htmlFor="first_name">First Name</label>
                         <input
                             id="first_name"
@@ -385,7 +500,7 @@ const OnBoarding = () => {
                         />
 
                         <label>Birthday</label>
-                        <div className="multiple-input-container">
+                        <div className="multiple-input-container dateOfBirth">
                             <input
                                 id="dob_day"
                                 type="number"
@@ -448,15 +563,17 @@ const OnBoarding = () => {
                             <label htmlFor="more-gender-identity">More</label>
                         </div>
 
-                        <label htmlFor="show-gender">Show Gender on my Profile</label>
-
-                        <input
-                            id="show-gender"
-                            type="checkbox"
-                            name="show_gender"
-                            onChange={handleChange}
-                            checked={formData.show_gender}
-                        />
+                        <div className='showGenderContainer'>
+                            <input
+                                id="show-gender"
+                                type="checkbox"
+                                name="show_gender"
+                                className='showGender'
+                                onChange={handleChange}
+                                checked={formData.show_gender}
+                            />
+                            <label htmlFor="show-gender">Show Gender on my Profile</label>
+                        </div>
 
                         <label>Show Me</label>
 
@@ -515,40 +632,7 @@ const OnBoarding = () => {
                         <input type="submit"/>
                     </section>
 
-                    <section>
-
-                        <label htmlFor="url">Profile Photo</label>
-                        <input
-                            type="url"
-                            name="url"
-                            id="url"
-                            value={formData.url}
-                            onChange={handleChange}
-                            required={true}
-                        />
-                        <div className="photo-container">
-                            {formData.url && <img src={formData.url} alt="profile pic preview"/>}
-                        </div>  
-
-                        <span onClick={launchCameraEmotionDetection}>Ugly selfie</span>
-                        <br/>
-                        <div id="testExpressionResult"></div>
-                        
-
-    
-
-                        <video onLoadedMetadata={onPlay} id="inputVideo" autoPlay muted playsInline></video>
-                        <canvas id="overlay" />
-
-                        <div id="selfieButton" onClick={takeSelfie}>Snap!</div>
-
-                        <div id="uploadSelfie" onClick={uploadSelfie}>Upload selfie!</div>
-
-                        <canvas id="screencapture"></canvas>
-                        <img src="" id="imageToSave" alt=""/>
-
-
-                    </section>
+                    
 
                 </form>
             </div>
