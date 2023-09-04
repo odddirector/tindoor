@@ -68,6 +68,9 @@ nav .nav-button {
     border-radius: 10px;
     border: none;
     margin: 10px;
+    position: absolute;
+    right: 20px;
+    top: 20px;
 }
 
 nav .nav-button:disabled {
@@ -93,11 +96,12 @@ nav .logo-container .logo {
             to bottom,
             rgba(0, 0, 0, 0.65) 0%,
             rgba(0, 0, 0, 0) 100%
-    ), url('images/6e9794bcedeecf5a8f8f41338a2a7345.webp')
+    ), url('images/bg.png');
+    background-size: cover;
 }
 
 .home {
-    margin-top: 30vh;
+    margin-top: 35vh;
 }
 
 /*-------- Auth Modal --------*/
@@ -133,7 +137,13 @@ nav .logo-container .logo {
 
 /*-------- OnBoarding Page --------*/
 .onboarding {
+    padding-top: 100px;
     border-top: solid 1px rgb(213, 213, 213);
+}
+
+.onboarding h2 {
+    margin-bottom: -10px;
+    font-size: 21px;
 }
 
 .onboarding form {
@@ -262,6 +272,7 @@ nav .logo-container .logo {
     color: #FD4B68;
     border: 2px solid #FD4B68;
     margin-top: 40px;
+    margin-bottom: 70px;
 }
 
 .onboarding form input[type=submit]:hover {
@@ -464,7 +475,7 @@ nav .logo-container .logo {
     max-height: 780px; 
 }
 
-.dashboard .logoContainer {
+.logoContainer {
     position: absolute;
     text-align: center;
     top: 3vh;
@@ -472,7 +483,7 @@ nav .logo-container .logo {
     right: 0;
 }
 
-.dashboard .logoContainer img {
+.logoContainer img {
     width: 30%;
     max-width: 150px;
 }
@@ -544,10 +555,12 @@ nav .logo-container .logo {
 }
 
 .menuButtons {
-    position: absolute;
-    bottom: 2vh;
+    position: fixed;
+    bottom: 0;
+    padding-bottom: 1.5vh;
     left: 0;
     right: 0;
+    background-color: white;
 }
 
 .widthLimitWrapper {
@@ -560,6 +573,7 @@ nav .logo-container .logo {
     vertical-align: middle;
     width: 60px;
     margin: 0 1%;
+    cursor: pointer;
 }
 
 /*-------- Chat Container --------*/

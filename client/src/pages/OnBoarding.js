@@ -8,6 +8,7 @@ import { storage } from "../config/firebase"
 import { auth } from "../config/firebase"
 import { ref, uploadBytesResumable, uploadString, getDownloadURL, deleteObject } from "firebase/storage";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import BottomNav from '../components/BottomNav'
 
 const OnBoarding = () => {
     const [user, setUser] = useState(null)
@@ -636,6 +637,7 @@ const OnBoarding = () => {
 
                 </form>
             </div>
+            <BottomNav></BottomNav>
         </>
     )
 }
