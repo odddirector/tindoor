@@ -496,6 +496,7 @@ nav .logo-container .logo {
 .card h3 {
     margin-top: 0;
     margin-bottom: 0;
+    text-align: left;
     color: white;
     font-size: 40px;
     font-weight: 400;
@@ -542,7 +543,7 @@ nav .logo-container .logo {
     width: 14%;
 }
 
-.dashboard .menuButtons {
+.menuButtons {
     position: absolute;
     bottom: 2vh;
     left: 0;
@@ -555,7 +556,7 @@ nav .logo-container .logo {
     max-width: 450px;
 }
 
-.dashboard .menuButtons .menuButton {
+.menuButtons .menuButton {
     vertical-align: middle;
     margin: 0 4%;
 }
@@ -565,8 +566,8 @@ nav .logo-container .logo {
     background-color: rgb(255, 255, 255);
     box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
     rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
-    width: 30%;
-    text-align: left;
+    width: 100%;
+    text-align: center;
     z-index: 1;
 }
 
@@ -608,14 +609,15 @@ nav .logo-container .logo {
 }
 
 .img-container img {
-    width: 100%;
+    width: 130%;
+    height: 106%;
 }
 
 /*-------- Chat Display --------*/
 .chat-display,
 .matches-display {
     padding: 20px;
-    height: 60vh;
+    height: 100vh;
     overflow-y: auto;
 }
 

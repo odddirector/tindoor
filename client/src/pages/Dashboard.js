@@ -1,8 +1,8 @@
 import TinderCard from 'react-tinder-card'
 import {useEffect, useState} from 'react'
-import ChatContainer from '../components/ChatContainer'
 import {useCookies} from 'react-cookie'
 import axios from 'axios'
+import BottomNav from '../components/BottomNav'
 
 const Dashboard = () => {
     const [user, setUser] = useState(null)
@@ -114,15 +114,11 @@ const Dashboard = () => {
                                 </div>
                             </TinderCard>
                         )}
-                        <div className='menuButtons'>
-                            <div className='widthLimitWrapper'>
-                                <img src="/icons/menu_button_1.png" className='menuButton'/>
-                                <img src="/icons/menu_button_2.png" className='menuButton'/>
-                                <img src="/icons/menu_button_3.png" className='menuButton'/>
-                                <img src="/icons/menu_button_4.png" className='menuButton'/>
-                                <img src="/icons/menu_button_5.png" className='menuButton'/>
-                            </div>
-                        </div>
+                        
+
+                        <BottomNav></BottomNav>
+
+
                         {/* <div className="swipe-info">
                             {lastDirection ? <p>You swiped {lastDirection}</p> : <p/>}
                         </div> */}
