@@ -17,7 +17,7 @@ const Dashboard = () => {
 
     const getUser = async () => {
         try {
-            const response = await axios.get('http://localhost:8000/user', {
+            const response = await axios.get('https://tindoor-server.onrender.com/user', {
                 params: {userId}
             })
             setUser(response.data)
@@ -27,7 +27,7 @@ const Dashboard = () => {
     }
     const getGenderedUsers = async () => {
         try {
-            const response = await axios.get('http://localhost:8000/gendered-users', {
+            const response = await axios.get('https://tindoor-server.onrender.com/gendered-users', {
                 params: {gender: user?.gender_interest}
             })
             setGenderedUsers(response.data)
@@ -49,7 +49,7 @@ const Dashboard = () => {
 
     const updateMatches = async (matchedUserId) => {
         try {
-            await axios.put('http://localhost:8000/addmatch', {
+            await axios.put('https://tindoor-server.onrender.com/addmatch', {
                 userId,
                 matchedUserId
             })

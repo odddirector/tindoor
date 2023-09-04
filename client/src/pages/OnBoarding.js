@@ -45,7 +45,7 @@ const OnBoarding = () => {
         if (!userId) return;
 
         try {
-            const response = await axios.get('http://localhost:8000/user', {
+            const response = await axios.get('https://tindoor-server.onrender.com/user', {
                 params: {userId}
             })
             setUser(response.data)
@@ -120,7 +120,7 @@ const OnBoarding = () => {
         if (e) e.preventDefault()
 
         try {
-            const response = await axios.put('http://localhost:8000/user', {formData})
+            const response = await axios.put('https://tindoor-server.onrender.com/user', {formData})
             console.log(response)
             const success = response.status === 200
 
