@@ -79,7 +79,12 @@ const Dashboard = () => {
         <>
             {user &&
             <div className="dashboard">
-                <ChatContainer user={user}/>
+                
+                <div className='logoContainer'>
+                    <img src="/logo.png"/>
+                </div>
+
+                {/* <ChatContainer user={user}/> */}
                 <div className="swipe-container">
                     <div className="card-container">
 
@@ -92,13 +97,35 @@ const Dashboard = () => {
                                 <div
                                     style={{backgroundImage: "url(" + genderedUser.url + ")"}}
                                     className="card">
-                                    <h3>{genderedUser.first_name}</h3>
+                                    <div className='userInfo'>
+                                        <h3>{genderedUser.first_name}</h3>
+                                        <div className='location'>
+                                            <img src="/icons/location_icon.png"/>
+                                            <span>God knows where</span>
+                                        </div>
+                                    </div>
+                                    <div className='swipeButtons'>
+                                        <img src="/icons/swipe_button_1.png" className='swipeButton small'/>
+                                        <img src="/icons/swipe_button_2.png" className='swipeButton big'/>
+                                        <img src="/icons/swipe_button_3.png" className='swipeButton small'/>
+                                        <img src="/icons/swipe_button_4.png" className='swipeButton big'/>
+                                        <img src="/icons/swipe_button_5.png" className='swipeButton small'/>
+                                    </div>
                                 </div>
                             </TinderCard>
                         )}
-                        <div className="swipe-info">
-                            {lastDirection ? <p>You swiped {lastDirection}</p> : <p/>}
+                        <div className='menuButtons'>
+                            <div className='widthLimitWrapper'>
+                                <img src="/icons/menu_button_1.png" className='menuButton'/>
+                                <img src="/icons/menu_button_2.png" className='menuButton'/>
+                                <img src="/icons/menu_button_3.png" className='menuButton'/>
+                                <img src="/icons/menu_button_4.png" className='menuButton'/>
+                                <img src="/icons/menu_button_5.png" className='menuButton'/>
+                            </div>
                         </div>
+                        {/* <div className="swipe-info">
+                            {lastDirection ? <p>You swiped {lastDirection}</p> : <p/>}
+                        </div> */}
                     </div>
                 </div>
             </div>}

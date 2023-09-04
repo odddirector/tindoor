@@ -445,7 +445,7 @@ nav .logo-container .logo {
 }
 
 .dashboard .swipe-container {
-    width: 70%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -458,26 +458,106 @@ nav .logo-container .logo {
 }
 
 .dashboard .card-container {
-    width: 400px;
-    height: 650px;
+    width: 95vw;
+    height: 80vh;
+    max-width: 414px;
+    max-height: 780px; 
+}
+
+.dashboard .logoContainer {
+    position: absolute;
+    text-align: center;
+    top: 3vh;
+    left: 0;
+    right: 0;
+}
+
+.dashboard .logoContainer img {
+    width: 30%;
+    max-width: 150px;
 }
 
 .card {
-    width: 400px;
-    height: 650px;
+    width: 95vw;
+    height: 80vh;
+    max-width: 414px;
+    max-height: 780px;
     border-radius: 30px;
     background-size: cover;
     background-position: center;
 }
 
+.card .userInfo{
+    position: absolute;
+    bottom: 120px;
+    left: 30px;
+}
+
 .card h3 {
     margin-top: 0;
+    margin-bottom: 0;
+    color: white;
+    font-size: 40px;
+    font-weight: 400;
+    text-shadow: 1px 1px 22px rgba(0, 0, 0, 0.6);
+}
+
+.card .location {
+    text-align: left;
+    color: white;
+    text-shadow: 1px 1px 15px rgba(0, 0, 0, 0.6);
+    font-weight: 300;
+}
+
+.card .location span,
+.card .location img  {
+    vertical-align: middle;
+}
+
+.card .location img  {
+    margin-right: 5px;
 }
 
 .dashboard .swipe-info {
     position: absolute;
     bottom: 0;
     padding: 10px;
+}
+
+.dashboard .swipeButtons {
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+}
+
+.dashboard .swipeButtons .swipeButton {
+    vertical-align: middle;
+    margin: 0 1.6%;
+}
+
+.dashboard .swipeButtons .swipeButton.big {
+    width: 17%;
+}
+.dashboard .swipeButtons .swipeButton.small {
+    width: 14%;
+}
+
+.dashboard .menuButtons {
+    position: absolute;
+    bottom: 2vh;
+    left: 0;
+    right: 0;
+}
+
+.widthLimitWrapper {
+    width: 100%;
+    margin: 0 auto;
+    max-width: 450px;
+}
+
+.dashboard .menuButtons .menuButton {
+    vertical-align: middle;
+    margin: 0 4%;
 }
 
 /*-------- Chat Container --------*/
