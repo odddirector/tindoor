@@ -69,6 +69,13 @@ const Dashboard = () => {
         console.log(name + ' left the screen!')
     }
 
+    const getUserAge = (user) => {
+        let age = new Date().getFullYear() - user.dob_year;
+        return age;
+    }
+
+    
+
     const matchedUserIds = user?.matches.map(({user_id}) => user_id).concat(userId)
 
     const filteredGenderedUsers = genderedUsers?.filter(genderedUser => !matchedUserIds.includes(genderedUser.user_id))
@@ -98,11 +105,20 @@ const Dashboard = () => {
                                     style={{backgroundImage: "url(" + genderedUser.url + ")"}}
                                     className="card">
                                     <div className='userInfo'>
-                                        <h3>{genderedUser.first_name}</h3>
+                                        <h3>
+                                            {genderedUser.first_name}, 
+                                            <span>{getUserAge(genderedUser)}</span>
+                                        </h3>
+                                        <div className='qualities'>
+                                            A {genderedUser.qualities} 
+                                            {genderedUser.show_gender ? genderedUser.gender_identity : "person"}
+                                        </div>
+
                                         <div className='location'>
                                             <img src="/icons/location_icon.png"/>
                                             <span>God knows where</span>
                                         </div>
+                                        
                                     </div>
                                     <div className='swipeButtons'>
                                         <img src="/icons/swipe_button_1.png" className='swipeButton small'/>
