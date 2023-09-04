@@ -571,6 +571,43 @@ nav .logo-container .logo {
     width: 14%;
 }
 
+.dashboard .swipeButtons .swipeButton {
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.dashboard .swipeButtons .swipeButton:hover {
+    transform: scale(1.1);
+}
+
+.dashboard .swipeButtons .swipeButton:active {
+    transform: scale(0.8) rotate(-15deg);
+}
+
+.wtfElementThree {
+    position: absolute;
+    font-size: 40px;
+    z-index: 999;
+    pointer-events: none; 
+    animation-name: crawlLeft;
+    animation-duration: 5s;
+    animation-iteration-count: infinite;
+    transform: translate(0, 0);
+}
+
+.wtfElementsFour {
+    position: absolute;
+    font-size: 90px;
+    z-index: 9999;
+    pointer-events: none;
+}
+
+@keyframes crawlLeft {
+    0% {transform: translate(0, 0);}
+    50% {transform: translate(-1000px, 0);}
+    100% {transform: translate(0, 0);}
+}
+
 .menuButtons {
     position: fixed;
     bottom: 0;

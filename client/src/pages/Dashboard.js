@@ -9,6 +9,8 @@ const Dashboard = () => {
     const [genderedUsers, setGenderedUsers] = useState(null)
     const [lastDirection, setLastDirection] = useState()
     const [cookies, setCookie, removeCookie] = useCookies(['user'])
+    const [wtfElements, setWtfElements] = useState([])
+    const [wtfElementsFour, setWtfElementsFour] = useState([])
 
     const userId = cookies.UserId
 
@@ -57,7 +59,6 @@ const Dashboard = () => {
         }
     }
 
-
     const swiped = (direction, swipedUserId) => {
         if (direction === 'right') {
             updateMatches(swipedUserId)
@@ -74,6 +75,66 @@ const Dashboard = () => {
         return age;
     }
 
+    const getRandomInt = (min, max) => {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    const doWeirdShit = (kind) => {
+        switch(kind) {
+            case 1:
+                // code block
+                window.alert("No, you don't need to see this again.");
+                break;
+            case 2:
+                window.alert("Jesus, who uses these?! Swipe!");
+                break;
+            case 3:
+                // code block
+                console.log("case 3");
+                let randX = Math.floor(Math.random() * window.innerWidth);
+                let randY = Math.floor(Math.random() * window.innerHeight);
+
+                setWtfElements(wtfElements.concat(
+                    <div 
+                        key={wtfElements.length} 
+                        className='wtfElementThree'
+                        style={{
+                            left: randX+"px",
+                            top: randY+"px",
+                        }}
+                    >🦔</div>
+                ));
+
+                break;
+            case 4:
+                window.alert("God! Just swipe right, will you?");
+                break;
+            default:
+                // do nothing
+        }
+
+        if (kind == 5) {
+            let randEmoji = "&" + "#127" + getRandomInt(789, 876) + ";";
+            console.log(randEmoji);
+            let randX = Math.floor(Math.random() * window.innerWidth);
+            let randY = Math.floor(Math.random() * window.innerHeight);
+
+            setWtfElementsFour(wtfElementsFour.concat(
+                <div 
+                    key={wtfElementsFour.length + "four"} 
+                    className='wtfElementsFour'
+                    style={{
+                        left: randX+"px",
+                        top: randY+"px",
+                    }}
+                    dangerouslySetInnerHTML={{__html: randEmoji}}
+                ></div>
+            ));
+        }
+    }
+
     
 
     const matchedUserIds = user?.matches.map(({user_id}) => user_id).concat(userId)
@@ -87,6 +148,9 @@ const Dashboard = () => {
             {user &&
             <div className="dashboard">
                 
+                {wtfElements}
+                {wtfElementsFour}
+
                 <div className='logoContainer'>
                     <img src="/logo.png"/>
                 </div>
@@ -121,11 +185,11 @@ const Dashboard = () => {
                                         
                                     </div>
                                     <div className='swipeButtons'>
-                                        <img src="/icons/swipe_button_1.png" className='swipeButton small'/>
-                                        <img src="/icons/swipe_button_2.png" className='swipeButton big'/>
-                                        <img src="/icons/swipe_button_3.png" className='swipeButton small'/>
-                                        <img src="/icons/swipe_button_4.png" className='swipeButton big'/>
-                                        <img src="/icons/swipe_button_5.png" className='swipeButton small'/>
+                                        <img src="/icons/swipe_button_1.png" onClick={()=>doWeirdShit(1)} className='pressable swipeButton small'/>
+                                        <img src="/icons/swipe_button_2.png" onClick={()=>doWeirdShit(2)} className='pressable swipeButton big'/>
+                                        <img src="/icons/swipe_button_3.png" onClick={()=>doWeirdShit(3)} className='pressable swipeButton small'/>
+                                        <img src="/icons/swipe_button_4.png" onClick={()=>doWeirdShit(4)} className='pressable swipeButton big'/>
+                                        <img src="/icons/swipe_button_5.png" onClick={()=>doWeirdShit(5)} className='pressable swipeButton small'/>
                                     </div>
                                 </div>
                             </TinderCard>
