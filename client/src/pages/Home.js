@@ -31,6 +31,7 @@ const Home = () => {
             />
             <div className="home">
                 <h1 className="primary-title">Swine Right</h1>
+                <h2>The Tinder for Ugly People </h2>
                 <button className="primary-button" onClick={handleClick}>
                     {authToken ? 'Signout' : 'Create Account'}
                 </button>
@@ -39,6 +40,10 @@ const Home = () => {
                 {showModal && (
                     <AuthModal setShowModal={setShowModal} isSignUp={isSignUp}/>
                 )}
+            </div>
+            <div className='credit'>
+                Created by <a href='https://www.youtube.com/@odddirector'>Odddirector</a>, 
+                based on a Tinder Clone by <a href='https://www.youtube.com/@AniaKubow'>Ania Kubow</a>
             </div>
         </div>
     )
